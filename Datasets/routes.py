@@ -68,30 +68,10 @@ def get_data(id: str):
         if not data:
             return{"Message":"Data Not Found"}
                 #return HTTPException(status_code=404, detail="Data not found")
-
-            # Converting the fetched record into a dictionary
-        result = {
-                "id": data[0],
-                "dataset_id": data[1],
-                "type": data[2],
-                "name": data[3],
-                "validation_config": data[4],
-                "extraction_config": data[5],
-                "dedup_config": data[6],
-                "data_schema": data[7],
-                "denorm_config": data[8],
-                "router_config": data[9],
-                "dataset_config": data[10],
-                "status": data[11],
-                "tags": data[12],
-                "data_version": data[13],
-                "created_by": data[14],
-                "updated_by": data[15],
-                "created_date":data[16],
-                "updated_date":data[17],
-                "published_date": data[18],
-            }
-        return result
+        cur.execute("SELECT * FROM datasets;")
+        dataDisplay = cur.fetchall()
+        return dataDisplay
+       
     except Exception as e:
         print("Error:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
