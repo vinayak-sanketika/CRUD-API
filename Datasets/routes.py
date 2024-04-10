@@ -66,12 +66,8 @@ def get_data(id: str):
         data = cur.fetchone()
         print(data)
         if not data:
-            return{"Message":"Data Not Found"}
-                #return HTTPException(status_code=404, detail="Data not found")
-        cur.execute("SELECT * FROM datasets;")
-        dataDisplay = cur.fetchall()
-        return dataDisplay
-       
+            return{id:"Data Not Found"}
+        return data
     except Exception as e:
         print("Error:", e)
         raise HTTPException(status_code=500, detail="Internal Server Error")
@@ -95,10 +91,28 @@ def post_data(data: DataInput):
         dataset_config_json = json.dumps(data.dataset_config)
         print("done")
         cur.execute("INSERT INTO datasets (id, dataset_id, type, name, validation_config,extraction_config,dedup_config,data_schema,denorm_config,router_config,dataset_config, status,tags,data_version,created_by,updated_by, created_date,updated_date,published_date) VALUES (%s, %s, %s, %s, %s,%s,%s,%s, %s, %s, %s, %s,%s,%s,%s, %s, %s,%s,%s);", 
-                                          (data.id, data.dataset_id, data.type, data.name, validation_config_json, extraction_config_json, dedup_config_json, data_schema_json, denorm_config_json, router_config_json, dataset_config_json, data.status, data.tags, data.data_version, data.created_by, data.updated_by, data.created_date, data.updated_date, data.published_date))
+        (   data.id,
+            data.dataset_id,
+            data.type, 
+            data.name, 
+            validation_config_json, 
+            extraction_config_json, 
+            dedup_config_json, 
+            data_schema_json, 
+            denorm_config_json, 
+            router_config_json, 
+            dataset_config_json, 
+            data.status, 
+            data.tags, 
+            data.data_version, 
+            data.created_by, 
+            data.updated_by, 
+            data.created_date, 
+            data.updated_date, 
+            data.published_date))
         connection.commit()
         #If success return 
-        return {"message": "Data inserted successfully"}
+        return {"Id":data.id, "Inserted":"true"}
     except Exception as e:
         connection.rollback()
         print("Error", e)
@@ -116,7 +130,7 @@ def patch_data(id: str, data: PatchDataInput):
         cur.execute("SELECT * FROM datasets WHERE id = %s;", (id,))
         existing_data = cur.fetchone()
         if not existing_data:
-            return HTTPException(status_code=404, detail="Data not found")
+            return {id:"Data not found"}
 
             # Update the record
         validation_config_json = json.dumps(data.validation_config)
@@ -129,7 +143,7 @@ def patch_data(id: str, data: PatchDataInput):
         cur.execute("UPDATE datasets SET dataset_id = %s, type = %s, name = %s, validation_config = %s, extraction_config=%s,dedup_config=%s,data_schema=%s,denorm_config=%s,router_config=%s,dataset_config=%s,status=%s,tags=%s,data_version=%s,created_by=%s,updated_by=%s ,created_date=%s,updated_date = %s , published_date=%s WHERE id = %s;",
                         (data.dataset_id, data.type, data.name, validation_config_json,extraction_config_json,dedup_config_json,data_schema_json,denorm_config_json,router_config_json,dataset_config_json,data.status,data.tags,data.data_version,data.created_by,data.updated_by,data.created_date,data.updated_date,data.published_date, id))
         connection.commit()
-        return {"Message": "Data Updated successfully"}
+        return{"Id":data.id, "Updated":"true"}
    # except HTTPException:
         # Re-raise HTTPException to propagate it
     #    raise
@@ -151,15 +165,13 @@ def delete_data(id: str):
         cur.execute("SELECT * FROM datasets WHERE id = %s;", (id,))
         existing_data = cur.fetchone()
         if not existing_data:
-            return HTTPException(status_code=404, detail="Data not found")
+            return HTTPException(status_code=404, detail={id:"Data not found"})
 
             # Delete the record
         cur.execute("DELETE FROM datasets WHERE id = %s;", (id,))
         connection.commit()
-        return {"Message": "Data Deleted successfully"}
-    #except HTTPException:
-        # Re-raise HTTPException to propagate it
-     #   raise
+        return {"ID":id,"Deleted":"true"}
+
     except Exception as e:
         connection.rollback()
         print("Error:", e)
