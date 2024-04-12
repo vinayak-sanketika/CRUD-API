@@ -98,7 +98,7 @@ def get_data(id: str):
                                                         },
                                                 "responseCode": "SERVER_ERROR",
                                                 "result": {
-                                                            "id":id
+                                                            
                                                         }
                                             }
                             )
@@ -136,7 +136,7 @@ def post_data(data: DataInput):
                                                         },
                                                 "responseCode": "Bad_Request",
                                                 "result": {
-                                                            "id": data.id
+                                                            
                                                         }
                                             })
         cur.execute("INSERT INTO datasets (id, dataset_id, type, name, validation_config,extraction_config,dedup_config,data_schema,denorm_config,router_config,dataset_config, status,tags,data_version,created_by,updated_by, created_date,updated_date,published_date) VALUES (%s, %s, %s, %s, %s,%s,%s,%s, %s, %s, %s, %s,%s,%s,%s, %s, %s,%s,%s);", 
@@ -190,7 +190,7 @@ def post_data(data: DataInput):
                                             },
                                     "responseCode": "Server_Error",
                                     "result": {
-                                                "id": data.id
+                                                
                                             }
                                 })
     finally:
@@ -221,7 +221,7 @@ def put_data(id: str, data: PatchDataInput):
                                                         },
                                                 "responseCode": "NOT_FOUND",
                                                 "result": {
-                                                            "id":id
+                                                           
                                                         }
                                             }
                                  )
@@ -281,7 +281,7 @@ def put_data(id: str, data: PatchDataInput):
                                                         },
                                                 "responseCode": "Internal_Server_Error",
                                                 "result": {
-                                                            "id":id
+                                                            
                                                         }
                                             }
                              )
@@ -313,7 +313,7 @@ def patch_data(id: str, data: PatchDataInput):
                                                         },
                                                 "responseCode": "NOT_FOUND",
                                                 "result": {
-                                                            "id":id
+                                                           
                                                         }
                                             })
 
@@ -393,7 +393,7 @@ def patch_data(id: str, data: PatchDataInput):
                                                         },
                                                 "responseCode": "Internal_Server_error",
                                                 "result": {
-                                                            "id":id
+                                                            
                                                         }
                                             }
                             
@@ -425,7 +425,7 @@ def delete_data(id: str):
                                                         },
                                                 "responseCode": "NOT_FOUND",
                                                 "result": {
-                                                            "id":id
+                                                            
                                                         }
                                             })
 
@@ -463,7 +463,7 @@ def delete_data(id: str):
                                                         },
                                                 "responseCode": "Internal_Server_Error",
                                                 "result": {
-                                                            "id":id
+                                                            
                                                         }
                                             })
     finally:
